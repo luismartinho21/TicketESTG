@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.ticketestg.Admin.Menuadmin
 import com.example.ticketestg.User.Menuuser
 
 class login : AppCompatActivity() {
@@ -26,24 +27,28 @@ class login : AppCompatActivity() {
         editpword = findViewById(R.id.editTextTextPassword3)
         dbh = DBHelper(this)
 
-        loginbtn.setOnClickListener{
-
+        loginbtn.setOnClickListener {
             val useredit = edituser.text.toString()
             val passedit = editpword.text.toString()
 
-            if (TextUtils.isEmpty(useredit)|| TextUtils.isEmpty(passedit)){
+            if (TextUtils.isEmpty(useredit) || TextUtils.isEmpty(passedit)) {
                 Toast.makeText(this, "Adicione Nome de utilizador e password!", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                val checkuser = dbh.checkuserpass(useredit,passedit)
-                if (checkuser==true){
+            } else {
+                val checkuser = dbh.checkuserpass(useredit, passedit)
+                if (checkuser) {
+                    //User Login
                     Toast.makeText(this, "Login com sucesso!", Toast.LENGTH_SHORT).show()
                     val intent = Intent(applicationContext, Menuuser::class.java)
                     startActivity(intent)
                     finish()
-                }
-                else{
-                    Toast.makeText(this,"Utilizador ou Passsword Errados!",Toast.LENGTH_SHORT).show()
+                } else if (useredit == "admin" && passedit == "adminpass") {
+                    // Admin login
+                    Toast.makeText(this, "Admin Login com sucesso!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(applicationContext, Menuadmin::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Utilizador ou Password Errados!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
