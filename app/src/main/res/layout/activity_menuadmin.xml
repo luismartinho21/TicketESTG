@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D0D0D0"
+    android:background="#c2d6d6"
     tools:context=".Admin.Menuadmin">
 
     <TextView
@@ -19,18 +19,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/adminticket"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:text="Tickets"
+        android:layout_marginTop="156dp"
         android:background="@drawable/btn"
+        android:text="Tickets"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -38,15 +39,16 @@
         android:id="@+id/adminhis"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="44dp"
-        android:text="Histórico"
         android:background="@drawable/btn"
+        android:text="Histórico"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adminticket" />
+        app:layout_constraintTop_toBottomOf="@+id/adminticket"
+        app:layout_constraintVertical_bias="0.177" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
