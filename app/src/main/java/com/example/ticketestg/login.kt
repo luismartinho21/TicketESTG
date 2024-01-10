@@ -41,7 +41,7 @@ class login : AppCompatActivity() {
                     val intent = Intent(applicationContext, Menuuser::class.java)
                     startActivity(intent)
                     finish()
-                } else if (useredit == "admin" && passedit == "adminpass") {
+                } else if (useredit == "Admin" && passedit == "admin123") {
                     // Admin login
                     Toast.makeText(this, "Admin Login com sucesso!", Toast.LENGTH_SHORT).show()
                     val intent = Intent(applicationContext, Menuadmin::class.java)
