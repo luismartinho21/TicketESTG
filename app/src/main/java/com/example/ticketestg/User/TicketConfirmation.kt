@@ -1,21 +1,22 @@
-package com.example.ticketestg
+// TicketConfirmation.kt
+package com.example.ticketestg.User
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import com.example.ticketestg.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+class TicketConfirmation : Fragment() {
 
-class Tickets : Fragment() {
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -33,16 +34,7 @@ class Tickets : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tickets, container, false)
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Adicione o OnClickListener para o botão de envio de tickets
-        view.findViewById<Button>(R.id.buttonregticket).setOnClickListener {
-            // Navegue para a tela de confirmação ou lógica de envio de tickets
-            findNavController().navigate(R.id.action_ticketsFragment_to_ticketConfirmationFragment)
-        }
+        return inflater.inflate(R.layout.fragment_ticket_confirmation, container, false)
     }
 
     companion object {
@@ -52,12 +44,12 @@ class Tickets : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment Tickets.
+         * @return A new instance of fragment TicketConfirmation.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Tickets().apply {
+            TicketConfirmation().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

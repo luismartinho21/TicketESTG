@@ -20,7 +20,7 @@ class Menuadmin : AppCompatActivity() {
             btnhistadmin = findViewById(R.id.adminhis)
 
             btnticketadmin.setOnClickListener{
-                val intent = Intent(this, Ticketsadmin::class.java)
+                val intent = Intent(this, Ticketadmin::class.java)
                 startActivity(intent)
             }
 

@@ -113,7 +113,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editmotivo" />
 
         <Button
-            android:id="@+id/buttonRegisto"
+            android:id="@+id/buttonregticket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
