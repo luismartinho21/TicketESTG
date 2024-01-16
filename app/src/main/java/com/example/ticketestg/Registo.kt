@@ -1,12 +1,12 @@
 package com.example.ticketestg
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class registo : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class registo : AppCompatActivity() {
                 if (pwordtext.equals(cpwordtext)){
                     if (savedata==true){
                         Toast.makeText(this, "Registo concluido com sucesso!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(applicationContext,login::class.java)
+                        val intent = Intent(applicationContext, login::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -57,7 +57,7 @@ class registo : AppCompatActivity() {
         }
 
         voltarlogin.setOnClickListener {
-            val intent = Intent(applicationContext,login::class.java)
+            val intent = Intent(applicationContext, login::class.java)
             startActivity(intent)
             finish()
         }

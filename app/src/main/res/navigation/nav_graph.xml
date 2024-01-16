@@ -9,7 +9,7 @@
         android:id="@+id/ticketsFragment"
         android:name="com.example.ticketestg.Tickets"
         android:label="fragment_tickets"
-        tools:layout="@layout/fragment_tickets" >
+        tools:layout="@layout/fragment_tickets">
         <action
             android:id="@+id/action_ticketsFragment_to_ticketConfirmationFragment"
             app:destination="@id/ticketConfirmationFragment" />
@@ -19,5 +19,15 @@
         android:id="@+id/ticketConfirmationFragment"
         android:name="com.example.ticketestg.User.TicketConfirmation"
         android:label="fragment_ticket_confirmation"
-        tools:layout="@layout/fragment_ticket_confirmation" />
+        tools:layout="@layout/fragment_ticket_confirmation">
+        <action
+            android:id="@+id/action_ticketsFragment_to_ticketConfirmationFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ticketestg.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

@@ -3,65 +3,98 @@ package com.example.ticketestg
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import com.example.ticketestg.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.room.Room
+import com.example.ticketestg.User.AppDatabase
+import com.example.ticketestg.User.TicketRepository
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.ticketestg.User.Senha
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.ticketestg.User.SenhaAdapter
 
 
 class Tickets : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var ticketRepository: TicketRepository
+    private lateinit var senhaAdapter: SenhaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tickets, container, false)
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_tickets, container, false)
 
-        // Adicione o OnClickListener para o botão de envio de tickets
-        view.findViewById<Button>(R.id.buttonregticket).setOnClickListener {
-            // Navegue para a tela de confirmação ou lógica de envio de tickets
-            findNavController().navigate(R.id.action_ticketsFragment_to_ticketConfirmationFragment)
-        }
-    }
+        val database = Room.databaseBuilder(
+            requireContext(),
+            AppDatabase::class.java,
+            "senhas-db"
+        ).build()
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Tickets.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Tickets().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        ticketRepository = TicketRepository(database.senhaDao())
+
+        senhaAdapter = SenhaAdapter(emptyList())
+
+
+
+        val btnInserir = view.findViewById<Button>(R.id.buttonregticket)
+        btnInserir.setOnClickListener {
+            lifecycleScope.launch {
+                inserirSenha()
             }
+        }
+
+        return view
+
+
+        return view
+    }
+    suspend fun inserirSenha() {
+        val editNome = view?.findViewById<EditText>(R.id.editnomeuser)
+        val editNumero = view?.findViewById<EditText>(R.id.editnumero)
+        val editMail = view?.findViewById<EditText>(R.id.editemail)
+        val editMotivo = view?.findViewById<EditText>(R.id.editmotivo)
+        val editDescricao = view?.findViewById<EditText>(R.id.editdescrição)
+
+        val nome = editNome?.text.toString()
+        val numero = editNumero?.text.toString().toInt()
+        val mail = editMail?.text.toString()
+        val motivo = editMotivo?.text.toString()
+        val descricao = editDescricao?.text.toString()
+
+        val novaSenha = Senha(nome = nome, numero = numero, mail = mail, motivo = motivo, descricao = descricao, idade = 0)
+        ticketRepository.inserirSenha(novaSenha)
+
+        editNome?.text?.clear()
+        editNumero?.text?.clear()
+        editMail?.text?.clear()
+        editMotivo?.text?.clear()
+        editDescricao?.text?.clear()
+        editNome?.requestFocus()
+        atualizarListaSenhas()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        atualizarListaSenhas()
+    }
+
+    private fun atualizarListaSenhas() {
+        lifecycleScope.launch {
+            val listaSenhas = withContext(Dispatchers.IO) {
+                ticketRepository.listarSenhas()
+            }
+            senhaAdapter.listaSenhas = listaSenhas
+            senhaAdapter.notifyDataSetChanged()
+        }
     }
 }
