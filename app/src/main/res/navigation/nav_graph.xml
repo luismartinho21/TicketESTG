@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_tickets" >
         <action
             android:id="@+id/action_ticketsFragment_to_ticketConfirmationFragment"
-            app:destination="@id/ticketConfirmationFragment" />
+            app:destination="@id/home" />
     </fragment>
 
     <fragment
-        android:id="@+id/ticketConfirmationFragment"
-        android:name="com.example.ticketestg.User.TicketConfirmation"
-        android:label="fragment_ticket_confirmation"
-        tools:layout="@layout/fragment_ticket_confirmation" />
+        android:id="@+id/home"
+        android:name="com.example.ticketestg.Home"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
 </navigation>
