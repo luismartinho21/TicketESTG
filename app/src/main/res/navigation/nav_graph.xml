@@ -3,26 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ticketsFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.ticketestg.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/ticketsFragment"
+        android:name="com.example.ticketestg.Tickets"
+        android:label="fragment_tickets"
+        tools:layout="@layout/fragment_tickets" >
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ticketsFragment_to_ticketConfirmationFragment"
+            app:destination="@id/ticketConfirmationFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.ticketestg.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+        android:id="@+id/ticketConfirmationFragment"
+        android:name="com.example.ticketestg.User.TicketConfirmation"
+        android:label="fragment_ticket_confirmation"
+        tools:layout="@layout/fragment_ticket_confirmation" />
 </navigation>
