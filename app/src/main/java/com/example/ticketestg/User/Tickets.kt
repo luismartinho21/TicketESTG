@@ -18,10 +18,14 @@ import kotlinx.coroutines.withContext
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ticketestg.User.SenhaAdapter
 
 class Tickets : Fragment() {
 
+
     private lateinit var senhaRepository: SenhaRepository
+    // NOVO
+    private lateinit var senhaAdapter: SenhaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
