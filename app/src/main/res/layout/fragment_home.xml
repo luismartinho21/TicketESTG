@@ -26,10 +26,6 @@
 
     </LinearLayout>
 
-    <!-- Imagem abaixo da barra -->
-
-    <!-- Texto abaixo da imagem -->
-
     <ImageView
         android:layout_width="259dp"
         android:layout_height="375dp"
@@ -52,22 +48,5 @@
         android:layout_marginRight="20dp"
         android:textSize="19sp"
         android:layout_marginTop="350dp"/>
-
-    <!-- Adicione botões ou links para as principais funcionalidades do seu aplicativo -->
-    <Button
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Explorar"
-        android:layout_marginTop="570dp"
-        android:background="@color/cor_primaria"/>
-
-    <Button
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginTop="570dp"
-        android:background="@color/cor_secundaria"/>
 
 </RelativeLayout>
