@@ -25,7 +25,7 @@ class Menuadmin : AppCompatActivity() {
             }
 
             btnhistadmin.setOnClickListener {
-                val intent = Intent(this, histoadmin::class.java)
+                val intent = Intent(this, Historico::class.java)
                 startActivity(intent)
             }
         }

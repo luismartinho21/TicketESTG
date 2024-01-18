@@ -49,8 +49,12 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("androidx.room:room-ktx:2.6.0")
     implementation ("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.databinding:compiler:3.2.0-alpha11")
     ksp("androidx.room:room-compiler:2.6.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.google.guava:guava:30.1-android")
+    implementation ("com.google.guava:listenablefuture:1.0")
+
 }

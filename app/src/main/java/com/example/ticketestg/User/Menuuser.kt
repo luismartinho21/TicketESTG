@@ -7,6 +7,7 @@ import com.example.ticketestg.Ajuda
 import com.example.ticketestg.Historico
 import com.example.ticketestg.Home
 import com.example.ticketestg.R
+import com.example.ticketestg.Tickets
 import com.example.ticketestg.databinding.ActivityMenuuserBinding
 
 
