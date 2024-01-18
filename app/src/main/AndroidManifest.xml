@@ -18,7 +18,12 @@
         <activity
             android:name=".Admin.histoadmin"
             android:exported="false" />
-
+        <activity
+            android:name=".User.Menuuserticket"
+            android:exported="false" />
+        <activity
+            android:name=".Admin.Ticketadmin"
+            android:exported="false" />
         <activity
             android:name=".Admin.Menuadmin"
             android:exported="false"
