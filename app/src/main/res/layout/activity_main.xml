@@ -23,8 +23,8 @@
         android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="332dp"
-        android:background="@drawable/btn"
+        android:layout_marginTop="364dp"
+        android:background="@drawable/caixa"
         android:text="Registo"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -40,7 +40,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="44dp"
         android:text="LOGIN"
-        android:background="@drawable/btn"
+        android:background="@drawable/caixa"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -48,5 +48,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
