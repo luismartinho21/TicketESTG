@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Conteúdo da página aqui -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background=" #e6e6e6"
     >
+
+
 
     <!-- Barra superior azul -->
     <LinearLayout
@@ -73,4 +82,19 @@
         android:textSize="19sp"
         android:layout_marginTop="730dp"/>
 
+
+    <LinearLayout
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="#e6e6e6"
+        android:layout_marginTop="950dp"
+        android:gravity="center_vertical">
+
+
+    </LinearLayout>
+
+
 </RelativeLayout>
+    </ScrollView>
