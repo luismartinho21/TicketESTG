@@ -9,7 +9,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background=" #e6e6e6"
+    android:background="#ffffff"
     >
 
     <!-- Barra superior azul -->
@@ -68,8 +68,9 @@
         android:layout_height="wrap_content"
         android:text="Explore a eficiência em nossa resolução de avarias informáticas através do nosso prático sistema de tickets. Abra um ticket hoje e experimente um suporte técnico ágil e eficaz!"
         android:layout_gravity="center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:justificationMode="inter_word"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:textSize="19sp"
         android:layout_marginTop="280dp"/>
 
@@ -92,8 +93,9 @@
         android:layout_height="wrap_content"
         android:text="Somos especialistas em soluções informáticas abrangentes, oferecendo serviços de reparação e suporte para todo tipo de equipamento, desde hardware até software. Conte conosco para manter seus sistemas operando de maneira eficiente e livre de problemas."
         android:layout_gravity="center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:justificationMode="inter_word"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:textSize="19sp"
         android:layout_marginTop="730dp"/>
 
@@ -103,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="#e6e6e6"
+        android:background=" #ffffff"
         android:layout_marginTop="950dp"
         android:gravity="center_vertical">
 

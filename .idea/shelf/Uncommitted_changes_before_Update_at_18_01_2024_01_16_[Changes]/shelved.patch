@@ -1,0 +1,27 @@
+Index: app/src/main/res/layout/fragment_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\" #e6e6e6\"\r\n    >\r\n\r\n    <!-- Barra superior azul -->\r\n    <LinearLayout\r\n        android:id=\"@+id/toolbar\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"88dp\"\r\n        android:orientation=\"horizontal\"\r\n        android:background=\" #000000\r\n\"\r\n        android:gravity=\"center_vertical\">\r\n\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"Tickets ESTG\"\r\n            android:textAlignment=\"center\"\r\n            android:textColor=\"@android:color/white\"\r\n            android:textSize=\"24sp\"\r\n            android:textStyle=\"bold\" />\r\n\r\n    </LinearLayout>\r\n\r\n    <!-- Imagem abaixo da barra -->\r\n\r\n    <!-- Texto abaixo da imagem -->\r\n\r\n    <ImageView\r\n        android:layout_width=\"259dp\"\r\n        android:layout_height=\"375dp\"\r\n        android:layout_below=\"@id/toolbar\"\r\n        android:layout_alignParentStart=\"true\"\r\n        android:layout_alignParentEnd=\"true\"\r\n        android:layout_gravity=\"center\"\r\n        android:layout_marginStart=\"75dp\"\r\n        android:layout_marginTop=\"3dp\"\r\n        android:layout_marginEnd=\"77dp\"\r\n        android:src=\"@drawable/imgmenu\" />\r\n\r\n    <TextView\r\n        android:layout_below=\"@id/toolbar\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Explore a eficiência em nossa resolução de avarias informáticas através do nosso prático sistema de tickets. Abra um ticket hoje e experimente um suporte técnico ágil e eficaz!\"\r\n        android:layout_gravity=\"center\"\r\n        android:layout_marginLeft=\"20dp\"\r\n        android:layout_marginRight=\"20dp\"\r\n        android:textSize=\"19sp\"\r\n        android:layout_marginTop=\"350dp\"/>\r\n\r\n    <!-- Adicione botões ou links para as principais funcionalidades do seu aplicativo -->\r\n    <Button\r\n        android:layout_below=\"@id/toolbar\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Explorar\"\r\n        android:layout_marginTop=\"570dp\"\r\n        android:background=\"@color/cor_primaria\"/>\r\n\r\n    <Button\r\n        android:layout_below=\"@id/toolbar\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Login\"\r\n        android:layout_marginTop=\"570dp\"\r\n        android:background=\"@color/cor_secundaria\"/>\r\n\r\n</RelativeLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_home.xml b/app/src/main/res/layout/fragment_home.xml
+--- a/app/src/main/res/layout/fragment_home.xml	(revision 84c87b2166d4d55905900fa0bec1980c3ea29d29)
++++ b/app/src/main/res/layout/fragment_home.xml	(date 1705537613137)
+@@ -60,7 +60,7 @@
+         android:layout_height="wrap_content"
+         android:text="Explorar"
+         android:layout_marginTop="570dp"
+-        android:background="@color/cor_primaria"/>
++        android:background=""/>
+ 
+     <Button
+         android:layout_below="@id/toolbar"
+@@ -68,6 +68,6 @@
+         android:layout_height="wrap_content"
+         android:text="Login"
+         android:layout_marginTop="570dp"
+-        android:background="@color/cor_secundaria"/>
++        android:background=""/>
+ 
+ </RelativeLayout>
