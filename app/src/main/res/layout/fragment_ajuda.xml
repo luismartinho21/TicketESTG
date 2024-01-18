@@ -3,13 +3,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Ajuda">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:background=" #ffffff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tickets ESTG"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="39sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="187dp"
+        android:layout_height="88dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/logo"
+        android:textStyle="bold" />
+
     <TextView
+        android:id="@+id/textview17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ajuda"
-        android:textSize="26dp"/>
+        android:layout_marginTop="200dp"
+        android:textSize="26dp"
+        android:layout_marginLeft="25dp"
+        android:text="Se precisar de ajuda nao exite em contactar:"/>
+
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:text="@string/hupinheiro_ipvc_pt"
+        android:textColor="#000000"
+        android:textSize="24dp"
+        android:layout_marginLeft="30dp"/>
+    <TextView
+        android:id="@+id/textview18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:textColor="#000000"
+        android:textSize="24dp"
+        android:text="✉️"/>
+    <TextView
+        android:id="@+id/textview19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="332dp"
+        android:textColor="#000000"
+        android:textSize="24dp"
+        android:text="☎️"/>
+
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="332dp"
+        android:text="@string/_351_912123123"
+        android:textSize="24dp"
+        android:textColor="#000000" />
+
 
 </FrameLayout>
