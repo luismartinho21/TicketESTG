@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class Tickets : Fragment() {
 
     private lateinit var ticketDao: TicketDao
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +24,7 @@ class Tickets : Fragment() {
 
         // Inicialize o DAO
         ticketDao = TicketDatabase.getDatabase(requireContext()).ticketDao()
+        dbHelper = DBHelper(requireContext())
 
         // Declarações de variáveis para as EditTexts
         val editNomeUsuario: EditText = view.findViewById(R.id.editnomeuser)
@@ -32,12 +34,10 @@ class Tickets : Fragment() {
         val editDescricao: EditText = view.findViewById(R.id.editdescrição)
         val buttonregticket: Button = view.findViewById(R.id.buttonregticket)
 
-
-
         buttonregticket.setOnClickListener {
             // Obtenha os dados das EditTexts usando as variáveis declaradas
             val nomeUsuario = editNomeUsuario.text.toString()
-            val numeroContato  = editNumero.text.toString()
+            val numeroContato = editNumero.text.toString()
             val email = editEmail.text.toString()
             val motivo = editMotivo.text.toString()
             val descricao = editDescricao.text.toString()
@@ -56,15 +56,15 @@ class Tickets : Fragment() {
                 ticketDao.insert(ticket)
             }
 
-            // Navegue para a tela de histórico
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.historico, Historico())
-                .addToBackStack(null)
-                .commit()
+            // Limpar os EditTexts após o registro do ticket
+            editNomeUsuario.text.clear()
+            editNumero.text.clear()
+            editEmail.text.clear()
+            editMotivo.text.clear()
+            editDescricao.text.clear()
         }
-
 
         return view
     }
-
 }
+

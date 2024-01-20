@@ -12,7 +12,9 @@ import com.example.ticketestg.TicketDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class Historico : AppCompatActivity() {
+
+
+class HistoricoAdmin : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var ticketAdapter: TicketAdapter
@@ -20,7 +22,7 @@ class Historico : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_histoadmin) // certifique-se de criar este layout
+        setContentView(R.layout.activity_histoadmin)
 
         // Inicialize o DAO
         ticketDao = TicketDatabase.getDatabase(this).ticketDao()
@@ -32,7 +34,7 @@ class Historico : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ticketAdapter
 
-        // Buscar tickets do banco de dados
+        // Buscar todos os tickets do banco de dados
         GlobalScope.launch {
             val tickets = ticketDao.getAllTickets()
             runOnUiThread {
@@ -41,3 +43,5 @@ class Historico : AppCompatActivity() {
         }
     }
 }
+
+

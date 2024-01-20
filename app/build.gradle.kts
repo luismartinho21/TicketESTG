@@ -52,6 +52,8 @@ dependencies {
     implementation("androidx.databinding:compiler:3.2.0-alpha11")
     ksp("androidx.room:room-compiler:2.6.0")
     testImplementation("junit:junit:4.13.2")
+    implementation ("androidx.fragment:fragment-ktx:1.4.1")
+    implementation ("androidx.recyclerview:recyclerview:1.3.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.google.guava:guava:30.1-android")

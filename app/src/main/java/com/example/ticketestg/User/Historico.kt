@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ticketestg.User.Usuario
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -16,6 +17,7 @@ class Historico : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var ticketAdapter: TicketAdapter
     private lateinit var ticketDao: TicketDao
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +27,7 @@ class Historico : Fragment() {
 
         // Inicialize o DAO
         ticketDao = TicketDatabase.getDatabase(requireContext()).ticketDao()
+        dbHelper = DBHelper(requireContext())
 
         recyclerView = view.findViewById(R.id.recyclerView)
         ticketAdapter = TicketAdapter()
@@ -33,17 +36,29 @@ class Historico : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = ticketAdapter
 
-        // Buscar tickets do banco de dados
+
         GlobalScope.launch {
-            val tickets = ticketDao.getAllTickets()
-            requireActivity().runOnUiThread {
-                ticketAdapter.submitList(tickets)
+            val usuarioAtual = obterUsuarioAtual()
+            usuarioAtual?.let { user ->
+                val tickets = ticketDao.getTicketsByUser(user.utilizador)
+                requireActivity().runOnUiThread {
+                    ticketAdapter.submitList(tickets)
+                }
             }
         }
 
+
         return view
     }
+
+    private fun obterUsuarioAtual(): Usuario? {
+        // Implemente a lógica para obter o usuário atual (autenticação, etc.)
+        return dbHelper.getUser("usuario_logado")
+    }
 }
+
+
+
 
 
 
