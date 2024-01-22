@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.ticketestg.User.TicketRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class Tickets : Fragment() {
 
     private lateinit var ticketDao: TicketDao
+    private lateinit var ticketRepository: TicketRepository
     private lateinit var dbHelper: DBHelper
 
     override fun onCreateView(
@@ -51,10 +54,13 @@ class Tickets : Fragment() {
                 descricao = descricao
             )
 
-            // Guarda o ticket no banco de dados
+
+            // Guarda o ticket na base de dados
             GlobalScope.launch {
                 ticketDao.insert(ticket)
             }
+
+
 
             // Limpar os EditTexts após o registro do ticket
             editNomeUsuario.text.clear()
@@ -62,9 +68,11 @@ class Tickets : Fragment() {
             editEmail.text.clear()
             editMotivo.text.clear()
             editDescricao.text.clear()
+
         }
 
         return view
     }
 }
+
 

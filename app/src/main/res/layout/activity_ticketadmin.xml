@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c2d6d6"
     tools:context=".Admin.Ticketadmin">
 
 
+  <TextView
+      android:id="@+id/textView6"
+      android:layout_width="412dp"
+      android:layout_height="74dp"
+      android:text="Tickets"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textSize="50sp"
+      android:textStyle="bold" />
+
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerViewAdminTickets"
+      android:id="@+id/recyclerView1"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="20dp"/>
+      android:layout_marginTop="84dp"
+      android:background="#ECECEC"
+      android:scrollbars="vertical"
+      tools:listitem="@layout/item_senhaad" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

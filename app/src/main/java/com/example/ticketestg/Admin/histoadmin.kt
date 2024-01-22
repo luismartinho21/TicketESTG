@@ -34,7 +34,7 @@ class HistoricoAdmin : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ticketAdapter
 
-        // Buscar todos os tickets do banco de dados
+        // Buscar tickets do banco de dados
         GlobalScope.launch {
             val tickets = ticketDao.getAllTickets()
             runOnUiThread {
@@ -43,5 +43,7 @@ class HistoricoAdmin : AppCompatActivity() {
         }
     }
 }
+
+
 
 

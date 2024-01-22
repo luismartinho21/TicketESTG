@@ -1,36 +1,58 @@
 package com.example.ticketestg.Admin
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ticketestg.R
+import com.example.ticketestg.TicketAdapter
+import com.example.ticketestg.TicketDao
+import com.example.ticketestg.TicketDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class Ticketadmin : AppCompatActivity() {
+
     private lateinit var recyclerView: RecyclerView
+    private lateinit var ticketAdapter: TicketAdapter
+    private lateinit var ticketDao: TicketDao
+    private lateinit var btnAceitar: Button
+    private lateinit var btnRejeitar:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticketadmin)
 
 
+        // Inicialize o DAO
+        ticketDao = TicketDatabase.getDatabase(this).ticketDao()
 
+        recyclerView = findViewById(R.id.recyclerView1)
+        ticketAdapter = TicketAdapter()
+
+        // Configurar o RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = ticketAdapter
+
+
+
+        // Buscar tickets do banco de dados
+        GlobalScope.launch {
+            val tickets = ticketDao.getAllTickets()
+            runOnUiThread {
+                ticketAdapter.submitList(tickets)
+            }
+        }
+
+        btnAceitar.setOnClickListener{
+            val btnAceitar: Button = findViewById(R.id.butacept)
+
+        }
+
+        btnRejeitar.setOnClickListener {
+            val btnRejeitar: Button = findViewById(R.id.butreject)
+        }
     }
 
-
-    // Implemente as lógicas de aceitação, recusa, processamento e conclusão conforme necessário
-    private fun acceptTicket(ticketId: String) {
-        // Lógica de aceitação do ticket
-    }
-
-    private fun rejectTicket(ticketId: String) {
-        // Lógica de recusa do ticket
-    }
-
-    private fun processTicket(ticketId: String) {
-        // Lógica de processamento do ticket
-    }
-
-    private fun completeTicket(ticketId: String) {
-        // Lógica de conclusão do ticket
-    }
 }
