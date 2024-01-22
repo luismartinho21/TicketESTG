@@ -1,0 +1,396 @@
+Index: app/src/main/java/com/example/ticketestg/Admin/histoadmin.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.Admin\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport com.example.ticketestg.R\r\n\r\nclass histoadmin : AppCompatActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_histoadmin)\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/Admin/histoadmin.kt b/app/src/main/java/com/example/ticketestg/Admin/histoadmin.kt
+--- a/app/src/main/java/com/example/ticketestg/Admin/histoadmin.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/Admin/histoadmin.kt	(date 1705610977772)
+@@ -1,13 +1,43 @@
+ package com.example.ticketestg.Admin
+ 
+-import androidx.appcompat.app.AppCompatActivity
++
+ import android.os.Bundle
++import androidx.appcompat.app.AppCompatActivity
++import androidx.recyclerview.widget.LinearLayoutManager
++import androidx.recyclerview.widget.RecyclerView
+ import com.example.ticketestg.R
++import com.example.ticketestg.TicketAdapter
++import com.example.ticketestg.TicketDao
++import com.example.ticketestg.TicketDatabase
++import kotlinx.coroutines.GlobalScope
++import kotlinx.coroutines.launch
++
++class Historico : AppCompatActivity() {
+ 
+-class histoadmin : AppCompatActivity() {
++    private lateinit var recyclerView: RecyclerView
++    private lateinit var ticketAdapter: TicketAdapter
++    private lateinit var ticketDao: TicketDao
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+-        setContentView(R.layout.activity_histoadmin)
++        setContentView(R.layout.activity_histoadmin) // certifique-se de criar este layout
++
++        // Inicialize o DAO
++        ticketDao = TicketDatabase.getDatabase(this).ticketDao()
+ 
++        recyclerView = findViewById(R.id.recyclerView1)
++        ticketAdapter = TicketAdapter()
++
++        // Configurar o RecyclerView
++        recyclerView.layoutManager = LinearLayoutManager(this)
++        recyclerView.adapter = ticketAdapter
++
++        // Buscar tickets do banco de dados
++        GlobalScope.launch {
++            val tickets = ticketDao.getAllTickets()
++            runOnUiThread {
++                ticketAdapter.submitList(tickets)
++            }
++        }
+     }
+-}
+\ No newline at end of file
++}
+Index: app/src/main/java/com/example/ticketestg/Admin/Menuadmin.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.Admin\r\n\r\nimport android.content.Intent\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.widget.Button\r\nimport com.example.ticketestg.R\r\n\r\nclass Menuadmin : AppCompatActivity() {\r\n\r\n    private lateinit var btnticketadmin: Button\r\n    private lateinit var btnhistadmin: Button\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_menuadmin)\r\n\r\n\r\n            btnticketadmin = findViewById(R.id.adminticket)\r\n            btnhistadmin = findViewById(R.id.adminhis)\r\n\r\n            btnticketadmin.setOnClickListener{\r\n                val intent = Intent(this, Ticketadmin::class.java)\r\n                startActivity(intent)\r\n            }\r\n\r\n            btnhistadmin.setOnClickListener {\r\n                val intent = Intent(this, histoadmin::class.java)\r\n                startActivity(intent)\r\n            }\r\n        }\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/Admin/Menuadmin.kt b/app/src/main/java/com/example/ticketestg/Admin/Menuadmin.kt
+--- a/app/src/main/java/com/example/ticketestg/Admin/Menuadmin.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/Admin/Menuadmin.kt	(date 1705610806338)
+@@ -25,7 +25,7 @@
+             }
+ 
+             btnhistadmin.setOnClickListener {
+-                val intent = Intent(this, histoadmin::class.java)
++                val intent = Intent(this, Historico::class.java)
+                 startActivity(intent)
+             }
+         }
+Index: app/src/main/java/com/example/ticketestg/User/Historico.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.lifecycle.lifecycleScope\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport kotlinx.coroutines.launch\r\n\r\nclass Historico : Fragment() {\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.fragment_historico, container, false)\r\n    }\r\n\r\n}\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Historico.kt b/app/src/main/java/com/example/ticketestg/User/Historico.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Historico.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/User/Historico.kt	(date 1705605051881)
+@@ -1,24 +1,48 @@
++// Historico.kt
+ package com.example.ticketestg
+ 
+ import android.os.Bundle
+-import androidx.fragment.app.Fragment
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-import androidx.lifecycle.lifecycleScope
++import androidx.fragment.app.Fragment
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
++import kotlinx.coroutines.GlobalScope
+ import kotlinx.coroutines.launch
+ 
+ class Historico : Fragment() {
+ 
++    private lateinit var recyclerView: RecyclerView
++    private lateinit var ticketAdapter: TicketAdapter
++    private lateinit var ticketDao: TicketDao
++
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View? {
+-        return inflater.inflate(R.layout.fragment_historico, container, false)
+-    }
++        val view = inflater.inflate(R.layout.fragment_historico, container, false)
++
++        // Inicialize o DAO
++        ticketDao = TicketDatabase.getDatabase(requireContext()).ticketDao()
++
++        recyclerView = view.findViewById(R.id.recyclerView)
++        ticketAdapter = TicketAdapter()
++
++        // Configurar o RecyclerView
++        recyclerView.layoutManager = LinearLayoutManager(requireContext())
++        recyclerView.adapter = ticketAdapter
++
++        // Buscar tickets do banco de dados
++        GlobalScope.launch {
++            val tickets = ticketDao.getAllTickets()
++            requireActivity().runOnUiThread {
++                ticketAdapter.submitList(tickets)
++            }
++        }
+ 
++        return view
++    }
+ }
+ 
+ 
+Index: app/src/main/java/com/example/ticketestg/User/Senha.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Senha.kt b/app/src/main/java/com/example/ticketestg/User/Senha.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/ticketestg/User/Senha.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ /dev/null	(revision 88b2956a499f971ca09461630497540f7355d15a)
+@@ -1,14 +0,0 @@
+-package com.example.ticketestg.User
+-
+-import androidx.room.Entity
+-import androidx.room.PrimaryKey
+-
+-@Entity(tableName = "senhas")
+-data class Senha(
+-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+-    val nome: String,
+-    val numero: Int,
+-    val mail: String,
+-    val motivo: String,
+-    val descricao: String
+-)
+\ No newline at end of file
+Index: app/src/main/java/com/example/ticketestg/User/Tickets.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.User\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.View\r\nimport android.widget.Button\r\nimport androidx.lifecycle.lifecycleScope\r\nimport androidx.navigation.fragment.findNavController\r\nimport com.example.ticketestg.R\r\nimport kotlinx.coroutines.launch\r\n\r\n\r\nclass Tickets : Fragment() {\r\n        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n            super.onViewCreated(view, savedInstanceState)\r\n\r\n            val buttonRegTicket: Button = view.findViewById(R.id.buttonregticket)\r\n            buttonRegTicket.setOnClickListener {\r\n                // Insert the ticket into the history\r\n                val newSenha = Senha(\r\n                    nome = \"ExampleName\",\r\n                    numero = 123456789,\r\n                    mail = \"example@email.com\",\r\n                    motivo = \"Ticket\",\r\n                    descricao = \"Ticket Description\"\r\n                )\r\n            }\r\n        }\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Tickets.kt b/app/src/main/java/com/example/ticketestg/User/Tickets.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Tickets.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/User/Tickets.kt	(date 1705609257914)
+@@ -1,29 +1,70 @@
+-package com.example.ticketestg.User
++// Tickets.kt
++package com.example.ticketestg
+ 
+ import android.os.Bundle
+-import androidx.fragment.app.Fragment
++import android.view.LayoutInflater
+ import android.view.View
++import android.view.ViewGroup
+ import android.widget.Button
+-import androidx.lifecycle.lifecycleScope
+-import androidx.navigation.fragment.findNavController
+-import com.example.ticketestg.R
++import android.widget.EditText
++import androidx.fragment.app.Fragment
++import kotlinx.coroutines.GlobalScope
+ import kotlinx.coroutines.launch
+ 
+-
+ class Tickets : Fragment() {
+-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+-            super.onViewCreated(view, savedInstanceState)
++
++    private lateinit var ticketDao: TicketDao
++
++    override fun onCreateView(
++        inflater: LayoutInflater, container: ViewGroup?,
++        savedInstanceState: Bundle?
++    ): View? {
++        val view = inflater.inflate(R.layout.fragment_tickets, container, false)
++
++        // Inicialize o DAO
++        ticketDao = TicketDatabase.getDatabase(requireContext()).ticketDao()
+ 
+-            val buttonRegTicket: Button = view.findViewById(R.id.buttonregticket)
+-            buttonRegTicket.setOnClickListener {
+-                // Insert the ticket into the history
+-                val newSenha = Senha(
+-                    nome = "ExampleName",
+-                    numero = 123456789,
+-                    mail = "example@email.com",
+-                    motivo = "Ticket",
+-                    descricao = "Ticket Description"
+-                )
++        // Declarações de variáveis para as EditTexts
++        val editNomeUsuario: EditText = view.findViewById(R.id.editnomeuser)
++        val editNumero: EditText = view.findViewById(R.id.editnumero)
++        val editEmail: EditText = view.findViewById(R.id.editemail)
++        val editMotivo: EditText = view.findViewById(R.id.editmotivo)
++        val editDescricao: EditText = view.findViewById(R.id.editdescrição)
++        val buttonregticket: Button = view.findViewById(R.id.buttonregticket)
++
++
++
++        buttonregticket.setOnClickListener {
++            // Obtenha os dados das EditTexts usando as variáveis declaradas
++            val nomeUsuario = editNomeUsuario.text.toString()
++            val numeroContato  = editNumero.text.toString()
++            val email = editEmail.text.toString()
++            val motivo = editMotivo.text.toString()
++            val descricao = editDescricao.text.toString()
++
++            // Crie um objeto Ticket
++            val ticket = Ticket(
++                nomeUsuario = nomeUsuario,
++                numeroContato = numeroContato,
++                email = email,
++                motivo = motivo,
++                descricao = descricao
++            )
++
++            // Guarda o ticket no banco de dados
++            GlobalScope.launch {
++                ticketDao.insert(ticket)
+             }
++
++            // Navegue para a tela de histórico
++            requireActivity().supportFragmentManager.beginTransaction()
++                .replace(R.id.historico, Historico())
++                .addToBackStack(null)
++                .commit()
+         }
++
++
++        return view
+     }
++
++}
+Index: app/src/main/res/layout/activity_histoadmin.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"#c2d6d6\"\r\n    tools:context=\".Admin.histoadmin\">\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView6\"\r\n        android:layout_width=\"412dp\"\r\n        android:layout_height=\"74dp\"\r\n        android:text=\"Histórico\"\r\n        android:textAlignment=\"center\"\r\n        android:textColor=\"@color/black\"\r\n        android:textSize=\"50sp\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.024\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_histoadmin.xml b/app/src/main/res/layout/activity_histoadmin.xml
+--- a/app/src/main/res/layout/activity_histoadmin.xml	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/res/layout/activity_histoadmin.xml	(date 1705609940910)
+@@ -23,4 +23,16 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintVertical_bias="0.024" />
+ 
++    <androidx.recyclerview.widget.RecyclerView
++        android:id="@+id/recyclerView1"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:layout_marginTop="84dp"
++        android:background="#ECECEC"
++        android:scrollbars="vertical"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toBottomOf="@+id/textView6"
++        tools:listitem="@layout/item_senha" />
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/res/layout/item_senha.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"16dp\">\r\n\r\n    <TextView\r\n        android:id=\"@+id/editnomeuser\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Nome:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editnumero\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Nuero:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/txtEmail\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"E-mail:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editmotivo\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Motivo:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editdescricao\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Descrição:\" />\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_senha.xml b/app/src/main/res/layout/item_senha.xml
+--- a/app/src/main/res/layout/item_senha.xml	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/res/layout/item_senha.xml	(date 1705604180049)
+@@ -16,7 +16,7 @@
+         android:id="@+id/editnumero"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:text="Nuero:" />
++        android:text="Numero:" />
+ 
+     <TextView
+         android:id="@+id/txtEmail"
+Index: app/src/main/java/com/example/ticketestg/User/Home.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\n\r\n// TODO: Rename parameter arguments, choose names that match\r\n// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\r\nprivate const val ARG_PARAM1 = \"param1\"\r\nprivate const val ARG_PARAM2 = \"param2\"\r\n\r\n/**\r\n * A simple [Fragment] subclass.\r\n * Use the [Home.newInstance] factory method to\r\n * create an instance of this fragment.\r\n */\r\nclass Home : Fragment() {\r\n\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        // Inflate the layout for this fragment\r\n        return inflater.inflate(R.layout.fragment_home, container, false)\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Home.kt b/app/src/main/java/com/example/ticketestg/User/Home.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Home.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/User/Home.kt	(date 1705604396133)
+@@ -23,9 +23,9 @@
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View? {
+-        // Inflate the layout for this fragment
+         return inflater.inflate(R.layout.fragment_home, container, false)
+     }
+ 
+ 
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/ticketestg/User/Menuuser.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.User\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport com.example.ticketestg.Ajuda\r\nimport com.example.ticketestg.Historico\r\nimport com.example.ticketestg.Home\r\nimport com.example.ticketestg.R\r\nimport com.example.ticketestg.databinding.ActivityMenuuserBinding\r\n\r\n\r\nclass Menuuser : AppCompatActivity() {\r\n\r\n\r\n    private lateinit var binding: ActivityMenuuserBinding\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        binding = ActivityMenuuserBinding.inflate(layoutInflater)\r\n        setContentView(binding.root)\r\n        replaceFragment(Home())\r\n\r\n\r\n        binding.bottomNavigationView.setOnItemSelectedListener {\r\n\r\n            when(it.itemId){\r\n\r\n                R.id.home -> replaceFragment(Home())\r\n                R.id.historico -> replaceFragment(Historico())\r\n                R.id.tickets -> replaceFragment(Tickets())\r\n                R.id.ajuda -> replaceFragment(Ajuda())\r\n\r\n                else ->{\r\n\r\n                }\r\n            }\r\n            true\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    private fun replaceFragment(fragment : Fragment){\r\n\r\n        val fragmentManager = supportFragmentManager\r\n        val fragmentTransaction = fragmentManager.beginTransaction()\r\n        fragmentTransaction.replace(R.id.frame_layout,fragment)\r\n        fragmentTransaction.commit()\r\n\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Menuuser.kt b/app/src/main/java/com/example/ticketestg/User/Menuuser.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Menuuser.kt	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/java/com/example/ticketestg/User/Menuuser.kt	(date 1705604173474)
+@@ -7,6 +7,7 @@
+ import com.example.ticketestg.Historico
+ import com.example.ticketestg.Home
+ import com.example.ticketestg.R
++import com.example.ticketestg.Tickets
+ import com.example.ticketestg.databinding.ActivityMenuuserBinding
+ 
+ 
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id(\"com.android.application\")\r\n    id(\"org.jetbrains.kotlin.android\")\r\n    id(\"com.google.devtools.ksp\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.ticketestg\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.ticketestg\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    buildFeatures {\r\n        viewBinding = true\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(\"androidx.core:core-ktx:1.9.0\")\r\n    implementation(\"androidx.appcompat:appcompat:1.6.1\")\r\n    implementation(\"com.google.android.material:material:1.11.0\")\r\n    implementation(\"androidx.constraintlayout:constraintlayout:2.1.4\")\r\n    implementation(\"androidx.navigation:navigation-fragment-ktx:2.5.3\")\r\n    implementation(\"androidx.navigation:navigation-ui-ktx:2.5.3\")\r\n    implementation(\"androidx.room:room-ktx:2.6.0\")\r\n    implementation (\"androidx.room:room-runtime:2.6.0\")\r\n    ksp(\"androidx.room:room-compiler:2.6.0\")\r\n    testImplementation(\"junit:junit:4.13.2\")\r\n    androidTestImplementation(\"androidx.test.ext:junit:1.1.5\")\r\n    androidTestImplementation(\"androidx.test.espresso:espresso-core:3.5.1\")\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/build.gradle.kts	(date 1705604180155)
+@@ -49,8 +49,12 @@
+     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+     implementation("androidx.room:room-ktx:2.6.0")
+     implementation ("androidx.room:room-runtime:2.6.0")
++    implementation("androidx.databinding:compiler:3.2.0-alpha11")
+     ksp("androidx.room:room-compiler:2.6.0")
+     testImplementation("junit:junit:4.13.2")
+     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
++    implementation ("com.google.guava:guava:30.1-android")
++    implementation ("com.google.guava:listenablefuture:1.0")
++
+ }
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\" >\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@drawable/estg\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@drawable/logo\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.TicketESTG\"\r\n        tools:targetApi=\"31\" >\r\n        <activity\r\n            android:name=\".Admin.Ticketadmin\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".Admin.histoadmin\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".User.Menuuserticket\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".Admin.Ticketadmin\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".Admin.Menuadmin\"\r\n            android:exported=\"false\"\r\n            android:label=\"@string/title_activity_menuadmin\"\r\n            android:theme=\"@style/Theme.TicketESTG\" />\r\n        <activity\r\n            android:name=\".User.Menuuser\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".login\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".registo\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".MainActivity\"\r\n            android:exported=\"true\" >\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 88b2956a499f971ca09461630497540f7355d15a)
++++ b/app/src/main/AndroidManifest.xml	(date 1705604185512)
+@@ -19,10 +19,10 @@
+             android:name=".Admin.histoadmin"
+             android:exported="false" />
+         <activity
+-            android:name=".User.Menuuserticket"
++            android:name=".User.menuuserticket"
+             android:exported="false" />
+         <activity
+-            android:name=".Admin.Ticketadmin"
++            android:name=".Admin.Ticketsadmin"
+             android:exported="false" />
+         <activity
+             android:name=".Admin.Menuadmin"

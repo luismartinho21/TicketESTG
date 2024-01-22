@@ -1,0 +1,486 @@
+Index: app/src/main/java/com/example/ticketestg/User/Tickets.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.Button\r\nimport androidx.lifecycle.lifecycleScope\r\nimport androidx.room.Room\r\nimport com.example.ticketestg.R\r\nimport com.example.ticketestg.User.Senha\r\nimport com.example.ticketestg.User.SenhaRepository\r\nimport com.example.ticketestg.User.AppDatabase\r\nimport kotlinx.coroutines.Dispatchers\r\nimport kotlinx.coroutines.launch\r\nimport kotlinx.coroutines.withContext\r\nimport android.widget.EditText\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.example.ticketestg.User.SenhaAdapter\r\n\r\nclass Tickets : Fragment() {\r\n\r\n\r\n    private lateinit var senhaRepository: SenhaRepository\r\n    // NOVO\r\n    private lateinit var senhaAdapter: SenhaAdapter\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.fragment_tickets, container, false)\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n\r\n        val database = Room.databaseBuilder(\r\n            requireContext(),\r\n            AppDatabase::class.java,\r\n            \"senhas-db\"\r\n        ).build()\r\n\r\n        senhaRepository = SenhaRepository(database.senhaDao())\r\n\r\n        val btnInserir = view.findViewById<Button>(R.id.buttonregticket)\r\n        btnInserir.setOnClickListener {\r\n            lifecycleScope.launch {\r\n                inserirSenha()\r\n                atualizarListaSenhas()\r\n\r\n            }\r\n        }\r\n    }\r\n\r\n    suspend fun inserirSenha() {\r\n        val editNome = view?.findViewById<EditText>(R.id.editnomeuser)\r\n        val editNumero = view?.findViewById<EditText>(R.id.editnumero)\r\n        val editMail = view?.findViewById<EditText>(R.id.editemail)\r\n        val editMotivo = view?.findViewById<EditText>(R.id.editmotivo)\r\n        val editDescricao = view?.findViewById<EditText>(R.id.editdescrição)\r\n\r\n        val nome = editNome?.text.toString()\r\n        val numero = editNumero?.text.toString().toInt()\r\n        val mail = editMail?.text.toString()\r\n        val motivo = editMotivo?.text.toString()\r\n        val descricao = editDescricao?.text.toString()\r\n\r\n        val novaSenha = Senha(nome = nome, numero = numero, mail = mail, motivo = motivo, descricao = descricao, idade = 0)\r\n        senhaRepository.inserirSenha(novaSenha)\r\n\r\n        editNome?.text?.clear()\r\n        editNumero?.text?.clear()\r\n        editMail?.text?.clear()\r\n        editMotivo?.text?.clear()\r\n        editDescricao?.text?.clear()\r\n        editNome?.requestFocus()\r\n    }\r\n\r\n    private fun atualizarListaSenhas() {\r\n        lifecycleScope.launch {\r\n            val listaSenhas = withContext(Dispatchers.IO) {\r\n                senhaRepository.listarSenhas()\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Tickets.kt b/app/src/main/java/com/example/ticketestg/User/Tickets.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Tickets.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/java/com/example/ticketestg/User/Tickets.kt	(date 1705594882576)
+@@ -1,89 +1,65 @@
+-package com.example.ticketestg
++package com.example.ticketestg.User
+ 
+ import android.os.Bundle
+ import androidx.fragment.app.Fragment
+-import android.view.LayoutInflater
+ import android.view.View
+-import android.view.ViewGroup
+ import android.widget.Button
++import android.widget.EditText
++import androidx.lifecycle.ViewModelProvider
+ import androidx.lifecycle.lifecycleScope
+-import androidx.room.Room
++import androidx.navigation.fragment.findNavController
++import androidx.recyclerview.widget.LinearLayoutManager
++import androidx.recyclerview.widget.RecyclerView
+ import com.example.ticketestg.R
+-import com.example.ticketestg.User.Senha
+-import com.example.ticketestg.User.SenhaRepository
+-import com.example.ticketestg.User.AppDatabase
+-import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.launch
+-import kotlinx.coroutines.withContext
+-import android.widget.EditText
+-import androidx.recyclerview.widget.LinearLayoutManager
+-import androidx.recyclerview.widget.RecyclerView
+-import com.example.ticketestg.User.SenhaAdapter
++
+ 
+ class Tickets : Fragment() {
+ 
+-
+-    private lateinit var senhaRepository: SenhaRepository
+-    // NOVO
++    private lateinit var senhaViewModel: HistoricoViewModel
+     private lateinit var senhaAdapter: SenhaAdapter
+ 
+-    override fun onCreateView(
+-        inflater: LayoutInflater, container: ViewGroup?,
+-        savedInstanceState: Bundle?
+-    ): View? {
+-        return inflater.inflate(R.layout.fragment_tickets, container, false)
+-    }
+-
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+ 
+-        val database = Room.databaseBuilder(
+-            requireContext(),
+-            AppDatabase::class.java,
+-            "senhas-db"
+-        ).build()
++        // Inicializar o ViewModel e o Adapter
++        senhaViewModel = ViewModelProvider(this, HistoricoViewModelFactory()).get(HistoricoViewModel::class.java)
++        senhaAdapter = SenhaAdapter()
++
++        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
++        recyclerView.adapter = senhaAdapter
++        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+ 
+-        senhaRepository = SenhaRepository(database.senhaDao())
++        // Configurar o botão de registro de ticket
++        val buttonRegTicket: Button = view.findViewById(R.id.buttonregticket)
++        buttonRegTicket.setOnClickListener {
++            val nome = view.findViewById<EditText>(R.id.editnomeuser).text.toString()
++            val numero = view.findViewById<EditText>(R.id.editnumero).text.toString().toInt()
++            val email = view.findViewById<EditText>(R.id.editemail).text.toString()
++            val motivo = view.findViewById<EditText>(R.id.editmotivo).text.toString()
++            val descricao = view.findViewById<EditText>(R.id.editdescrição).text.toString()
+ 
+-        val btnInserir = view.findViewById<Button>(R.id.buttonregticket)
+-        btnInserir.setOnClickListener {
+-            lifecycleScope.launch {
+-                inserirSenha()
+-                atualizarListaSenhas()
+-
+-            }
+-        }
+-    }
+-
+-    suspend fun inserirSenha() {
+-        val editNome = view?.findViewById<EditText>(R.id.editnomeuser)
+-        val editNumero = view?.findViewById<EditText>(R.id.editnumero)
+-        val editMail = view?.findViewById<EditText>(R.id.editemail)
+-        val editMotivo = view?.findViewById<EditText>(R.id.editmotivo)
+-        val editDescricao = view?.findViewById<EditText>(R.id.editdescrição)
+-
+-        val nome = editNome?.text.toString()
+-        val numero = editNumero?.text.toString().toInt()
+-        val mail = editMail?.text.toString()
+-        val motivo = editMotivo?.text.toString()
+-        val descricao = editDescricao?.text.toString()
+-
+-        val novaSenha = Senha(nome = nome, numero = numero, mail = mail, motivo = motivo, descricao = descricao, idade = 0)
+-        senhaRepository.inserirSenha(novaSenha)
+-
+-        editNome?.text?.clear()
+-        editNumero?.text?.clear()
+-        editMail?.text?.clear()
+-        editMotivo?.text?.clear()
+-        editDescricao?.text?.clear()
+-        editNome?.requestFocus()
+-    }
+-
+-    private fun atualizarListaSenhas() {
++            // Inserir o ticket no banco de dados
++            val newSenha = Senha(
++                nome = nome,
++                numero = numero,
++                mail = email,
++                motivo = motivo,
++                descricao = descricao
++            )
++            inserirSenhaNoHistorico(newSenha)
++
++            // Navegar para o fragmento de histórico
++            findNavController().navigate(R.id.nav_graph)
++        }
++    }
++
++    private fun inserirSenhaNoHistorico(newSenha: Senha) {
+         lifecycleScope.launch {
+-            val listaSenhas = withContext(Dispatchers.IO) {
+-                senhaRepository.listarSenhas()
+-            }
++            // Inserir o ticket no banco de dados
++            SenhaRepository(SenhaDB.getDatabase(requireContext()).senhaDao()).inserirSenha(newSenha)
++            // Atualizar o ViewModel para refletir as mudanças
++            senhaViewModel.listarSenhas()
+         }
+     }
+ }
+Index: app/src/main/java/com/example/ticketestg/User/SenhaDao.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/SenhaDao.kt b/app/src/main/java/com/example/ticketestg/User/SenhaDao.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/ticketestg/User/SenhaDao.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ /dev/null	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
+@@ -1,15 +0,0 @@
+-package com.example.ticketestg.User
+-
+-import androidx.room.Dao
+-import androidx.room.Insert
+-import androidx.room.Query
+-import com.example.ticketestg.User.Senha
+-
+-@Dao
+-interface SenhaDao {
+-    @Insert
+-    suspend fun inserir(senha: Senha)
+-
+-    @Query("SELECT * FROM senhas")
+-    suspend fun listarSenhas(): List<Senha>
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/example/ticketestg/User/SenhaAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/SenhaAdapter.kt b/app/src/main/java/com/example/ticketestg/User/SenhaAdapter.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/ticketestg/User/SenhaAdapter.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ /dev/null	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
+@@ -1,36 +0,0 @@
+-package com.example.ticketestg.User
+-
+-import android.view.LayoutInflater
+-import android.view.View
+-import android.view.ViewGroup
+-import android.widget.TextView
+-import androidx.recyclerview.widget.RecyclerView
+-import com.example.ticketestg.Historico
+-import com.example.ticketestg.R
+-
+-class SenhaAdapter(var listaSenhas: Historico) :
+-    RecyclerView.Adapter<SenhaAdapter.ViewHolder>() {
+-
+-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+-
+-        val txtNome: TextView = itemView.findViewById(R.id.editnomeuser)
+-        val txtNumero: TextView = itemView.findViewById(R.id.editnumero)
+-        val txtMail: TextView = itemView.findViewById(R.id.editemail)
+-        val txtMotivo: TextView = itemView.findViewById(R.id.editmotivo)
+-        val txtDescricao: TextView = itemView.findViewById(R.id.editdescrição)
+-    }
+-
+-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_senha, parent, false)
+-        return ViewHolder(view)
+-    }
+-
+-    override fun getItemCount(): Int {
+-        TODO("Not yet implemented")
+-    }
+-
+-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+-        TODO("Not yet implemented")
+-    }
+-
+-}
+\ No newline at end of file
+Index: app/src/main/res/layout/admin_ticket_item.xml
+===================================================================
+diff --git a/app/src/main/res/layout/admin_ticket_item.xml b/app/src/main/res/layout/admin_ticket_item.xml
+deleted file mode 100644
+--- a/app/src/main/res/layout/admin_ticket_item.xml	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ /dev/null	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
+@@ -1,9 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent">
+-
+-
+-
+-
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/ticketestg/User/SenhaRepositorio.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/SenhaRepositorio.kt b/app/src/main/java/com/example/ticketestg/User/SenhaRepositorio.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/ticketestg/User/SenhaRepositorio.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ /dev/null	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
+@@ -1,14 +0,0 @@
+-package com.example.ticketestg.User
+-
+-import com.example.ticketestg.User.SenhaDao
+-import com.example.ticketestg.User.Senha
+-
+-class SenhaRepository(private val senhaDao: SenhaDao) {
+-    suspend fun inserirSenha(senha: Senha) {
+-        senhaDao.inserir(senha)
+-    }
+-
+-    suspend fun listarSenhas(): List<Senha> {
+-        return senhaDao.listarSenhas()
+-    }
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/example/ticketestg/User/SenhaDB.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/SenhaDB.kt b/app/src/main/java/com/example/ticketestg/User/SenhaDB.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/ticketestg/User/SenhaDB.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ /dev/null	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
+@@ -1,11 +0,0 @@
+-package com.example.ticketestg.User
+-
+-import androidx.room.Database
+-import androidx.room.RoomDatabase
+-import com.example.ticketestg.User.SenhaDao
+-import com.example.ticketestg.User.Senha
+-
+-@Database(entities = [Senha::class], version = 1)
+-abstract class AppDatabase : RoomDatabase() {
+-    abstract fun senhaDao(): SenhaDao
+-}
+\ No newline at end of file
+Index: app/src/main/res/layout/item_senha.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"16dp\">\r\n\r\n    <TextView\r\n        android:id=\"@+id/editnomeuser\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Nome:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editnumero\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Nuero:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/txtEmail\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"E-mail:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editmotivo\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Motivo:\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/editdescrição\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Descrição:\" />\r\n\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_senha.xml b/app/src/main/res/layout/item_senha.xml
+--- a/app/src/main/res/layout/item_senha.xml	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/res/layout/item_senha.xml	(date 1705589637597)
+@@ -31,7 +31,7 @@
+         android:text="Motivo:" />
+ 
+     <TextView
+-        android:id="@+id/editdescrição"
++        android:id="@+id/editdescricao"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Descrição:" />
+Index: app/src/main/java/com/example/ticketestg/User/Menuuser.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.User\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport com.example.ticketestg.Ajuda\r\nimport com.example.ticketestg.Historico\r\nimport com.example.ticketestg.Home\r\nimport com.example.ticketestg.R\r\nimport com.example.ticketestg.Tickets\r\nimport com.example.ticketestg.databinding.ActivityMenuuserBinding\r\n\r\n\r\nclass Menuuser : AppCompatActivity() {\r\n\r\n\r\n    private lateinit var binding: ActivityMenuuserBinding\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        binding = ActivityMenuuserBinding.inflate(layoutInflater)\r\n        setContentView(binding.root)\r\n        replaceFragment(Home())\r\n\r\n\r\n        binding.bottomNavigationView.setOnItemSelectedListener {\r\n\r\n            when(it.itemId){\r\n\r\n                R.id.home -> replaceFragment(Home())\r\n                R.id.historico -> replaceFragment(Historico())\r\n                R.id.tickets -> replaceFragment(Tickets())\r\n                R.id.ajuda -> replaceFragment(Ajuda())\r\n\r\n                else ->{\r\n\r\n                }\r\n            }\r\n            true\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    private fun replaceFragment(fragment : Fragment){\r\n\r\n        val fragmentManager = supportFragmentManager\r\n        val fragmentTransaction = fragmentManager.beginTransaction()\r\n        fragmentTransaction.replace(R.id.frame_layout,fragment)\r\n        fragmentTransaction.commit()\r\n\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Menuuser.kt b/app/src/main/java/com/example/ticketestg/User/Menuuser.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Menuuser.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/java/com/example/ticketestg/User/Menuuser.kt	(date 1705594718641)
+@@ -7,7 +7,7 @@
+ import com.example.ticketestg.Historico
+ import com.example.ticketestg.Home
+ import com.example.ticketestg.R
+-import com.example.ticketestg.Tickets
++import com.example.ticketestg.User.Tickets
+ import com.example.ticketestg.databinding.ActivityMenuuserBinding
+ 
+ 
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id(\"com.android.application\")\r\n    id(\"org.jetbrains.kotlin.android\")\r\n    id(\"com.google.devtools.ksp\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.ticketestg\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.ticketestg\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    buildFeatures {\r\n        viewBinding = true\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(\"androidx.core:core-ktx:1.9.0\")\r\n    implementation(\"androidx.appcompat:appcompat:1.6.1\")\r\n    implementation(\"com.google.android.material:material:1.11.0\")\r\n    implementation(\"androidx.constraintlayout:constraintlayout:2.1.4\")\r\n    implementation(\"androidx.navigation:navigation-fragment-ktx:2.5.3\")\r\n    implementation(\"androidx.navigation:navigation-ui-ktx:2.5.3\")\r\n    implementation(\"androidx.room:room-ktx:2.6.0\")\r\n    implementation (\"androidx.room:room-runtime:2.6.0\")\r\n    ksp(\"androidx.room:room-compiler:2.6.0\")\r\n    testImplementation(\"junit:junit:4.13.2\")\r\n    androidTestImplementation(\"androidx.test.ext:junit:1.1.5\")\r\n    androidTestImplementation(\"androidx.test.espresso:espresso-core:3.5.1\")\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/build.gradle.kts	(date 1705594278717)
+@@ -49,6 +49,7 @@
+     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+     implementation("androidx.room:room-ktx:2.6.0")
+     implementation ("androidx.room:room-runtime:2.6.0")
++    implementation("androidx.databinding:compiler:3.2.0-alpha11")
+     ksp("androidx.room:room-compiler:2.6.0")
+     testImplementation("junit:junit:4.13.2")
+     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+Index: app/src/main/java/com/example/ticketestg/User/Historico.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.Button\r\nimport android.widget.EditText\r\nimport androidx.lifecycle.lifecycleScope\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport androidx.room.Room\r\nimport com.example.ticketestg.User.AppDatabase\r\nimport com.example.ticketestg.User.Senha\r\nimport com.example.ticketestg.User.SenhaAdapter\r\nimport com.example.ticketestg.User.SenhaRepository\r\nimport kotlinx.coroutines.Dispatchers\r\nimport kotlinx.coroutines.launch\r\nimport kotlinx.coroutines.withContext\r\n\r\nclass Historico : Fragment() {\r\n\r\n\r\n    private lateinit var senhaRepository: SenhaRepository\r\n    // NOVO\r\n    private lateinit var senhaAdapter: SenhaAdapter\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        return inflater.inflate(R.layout.fragment_historico, container, false)\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n\r\n        val database = Room.databaseBuilder(\r\n            requireContext(),\r\n            AppDatabase::class.java,\r\n            \"senhas-db\"\r\n        ).build()\r\n\r\n        senhaRepository = SenhaRepository(database.senhaDao())\r\n\r\n        senhaAdapter = SenhaAdapter(this)\r\n        val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerView)\r\n        recyclerView.adapter = senhaAdapter\r\n\r\n\r\n        senhaRepository = SenhaRepository(database.senhaDao())\r\n\r\n        val btnInserir = view.findViewById<Button>(R.id.buttonregticket)\r\n        btnInserir.setOnClickListener {\r\n\r\n            lifecycleScope.launch {\r\n                inserirSenha()\r\n                atualizarListaSenhas()\r\n\r\n            }\r\n        }\r\n    }\r\n\r\n    suspend fun inserirSenha() {\r\n        val editNome = view?.findViewById<EditText>(R.id.editnomeuser)\r\n        val editNumero = view?.findViewById<EditText>(R.id.editnumero)\r\n        val editMail = view?.findViewById<EditText>(R.id.editemail)\r\n        val editMotivo = view?.findViewById<EditText>(R.id.editmotivo)\r\n        val editDescricao = view?.findViewById<EditText>(R.id.editdescrição)\r\n\r\n        val nome = editNome?.text.toString()\r\n        val numero = editNumero?.text.toString().toInt()\r\n        val mail = editMail?.text.toString()\r\n        val motivo = editMotivo?.text.toString()\r\n        val descricao = editDescricao?.text.toString()\r\n\r\n        val novaSenha = Senha(nome = nome, numero = numero, mail = mail, motivo = motivo, descricao = descricao, idade = 0)\r\n        senhaRepository.inserirSenha(novaSenha)\r\n\r\n        editNome?.text?.clear()\r\n        editNumero?.text?.clear()\r\n        editMail?.text?.clear()\r\n        editMotivo?.text?.clear()\r\n        editDescricao?.text?.clear()\r\n        editNome?.requestFocus()\r\n    }\r\n\r\n    private fun atualizarListaSenhas() {\r\n        lifecycleScope.launch {\r\n            val listaSenhas = withContext(Dispatchers.IO) {\r\n                senhaRepository.listarSenhas()\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Historico.kt b/app/src/main/java/com/example/ticketestg/User/Historico.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Historico.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/java/com/example/ticketestg/User/Historico.kt	(date 1705593788346)
+@@ -5,27 +5,13 @@
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-import android.widget.Button
+-import android.widget.EditText
+ import androidx.lifecycle.lifecycleScope
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
+-import androidx.room.Room
+-import com.example.ticketestg.User.AppDatabase
+-import com.example.ticketestg.User.Senha
+-import com.example.ticketestg.User.SenhaAdapter
+-import com.example.ticketestg.User.SenhaRepository
+-import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.launch
+-import kotlinx.coroutines.withContext
+ 
+ class Historico : Fragment() {
+ 
+-
+-    private lateinit var senhaRepository: SenhaRepository
+-    // NOVO
+-    private lateinit var senhaAdapter: SenhaAdapter
+-
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+@@ -33,66 +19,7 @@
+         return inflater.inflate(R.layout.fragment_historico, container, false)
+     }
+ 
+-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+-        super.onViewCreated(view, savedInstanceState)
+-
+-        val database = Room.databaseBuilder(
+-            requireContext(),
+-            AppDatabase::class.java,
+-            "senhas-db"
+-        ).build()
+-
+-        senhaRepository = SenhaRepository(database.senhaDao())
+-
+-        senhaAdapter = SenhaAdapter(this)
+-        val recyclerView= view.findViewById<RecyclerView>(R.id.recyclerView)
+-        recyclerView.adapter = senhaAdapter
+-
+-
+-        senhaRepository = SenhaRepository(database.senhaDao())
+-
+-        val btnInserir = view.findViewById<Button>(R.id.buttonregticket)
+-        btnInserir.setOnClickListener {
+-
+-            lifecycleScope.launch {
+-                inserirSenha()
+-                atualizarListaSenhas()
+-
+-            }
+-        }
+-    }
++}
+ 
+-    suspend fun inserirSenha() {
+-        val editNome = view?.findViewById<EditText>(R.id.editnomeuser)
+-        val editNumero = view?.findViewById<EditText>(R.id.editnumero)
+-        val editMail = view?.findViewById<EditText>(R.id.editemail)
+-        val editMotivo = view?.findViewById<EditText>(R.id.editmotivo)
+-        val editDescricao = view?.findViewById<EditText>(R.id.editdescrição)
+-
+-        val nome = editNome?.text.toString()
+-        val numero = editNumero?.text.toString().toInt()
+-        val mail = editMail?.text.toString()
+-        val motivo = editMotivo?.text.toString()
+-        val descricao = editDescricao?.text.toString()
+-
+-        val novaSenha = Senha(nome = nome, numero = numero, mail = mail, motivo = motivo, descricao = descricao, idade = 0)
+-        senhaRepository.inserirSenha(novaSenha)
+-
+-        editNome?.text?.clear()
+-        editNumero?.text?.clear()
+-        editMail?.text?.clear()
+-        editMotivo?.text?.clear()
+-        editDescricao?.text?.clear()
+-        editNome?.requestFocus()
+-    }
+-
+-    private fun atualizarListaSenhas() {
+-        lifecycleScope.launch {
+-            val listaSenhas = withContext(Dispatchers.IO) {
+-                senhaRepository.listarSenhas()
+-            }
+-        }
+-    }
+-}
+ 
+ 
+Index: app/src/main/java/com/example/ticketestg/User/Senha.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.ticketestg.User\r\n\r\nimport androidx.room.Entity\r\nimport androidx.room.PrimaryKey\r\n\r\n\r\n@Entity(tableName = \"senhas\")\r\ndata class Senha(\r\n    @PrimaryKey(autoGenerate = true) val id: Long = 0,\r\n    val nome: String,\r\n    val idade: Int,\r\n    val numero: Int,\r\n    val mail: String,\r\n    val motivo: String,\r\n    val descricao: String\r\n)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/ticketestg/User/Senha.kt b/app/src/main/java/com/example/ticketestg/User/Senha.kt
+--- a/app/src/main/java/com/example/ticketestg/User/Senha.kt	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/java/com/example/ticketestg/User/Senha.kt	(date 1705594432914)
+@@ -3,14 +3,13 @@
+ import androidx.room.Entity
+ import androidx.room.PrimaryKey
+ 
+-
++// Senha.kt
+ @Entity(tableName = "senhas")
+ data class Senha(
+     @PrimaryKey(autoGenerate = true) val id: Long = 0,
+     val nome: String,
+-    val idade: Int,
+     val numero: Int,
+     val mail: String,
+     val motivo: String,
+     val descricao: String
+-)
+\ No newline at end of file
++)
+Index: app/src/main/res/navigation/nav_graph.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<navigation xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/nav_graph\"\r\n    app:startDestination=\"@id/ticketsFragment\">\r\n\r\n    <fragment\r\n        android:id=\"@+id/ticketsFragment\"\r\n        android:name=\"com.example.ticketestg.Tickets\"\r\n        android:label=\"fragment_tickets\"\r\n        tools:layout=\"@layout/fragment_tickets\" >\r\n        <action\r\n            android:id=\"@+id/action_ticketsFragment_to_ticketConfirmationFragment\"\r\n            app:destination=\"@id/home\" />\r\n    </fragment>\r\n\r\n    <fragment\r\n        android:id=\"@+id/home\"\r\n        android:name=\"com.example.ticketestg.Home\"\r\n        android:label=\"Home\"\r\n        tools:layout=\"@layout/fragment_home\" />\r\n</navigation>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/navigation/nav_graph.xml b/app/src/main/res/navigation/nav_graph.xml
+--- a/app/src/main/res/navigation/nav_graph.xml	(revision 9032b65d5619978d75ac61c8eff2f87f464b01a5)
++++ b/app/src/main/res/navigation/nav_graph.xml	(date 1705594145481)
+@@ -7,7 +7,7 @@
+ 
+     <fragment
+         android:id="@+id/ticketsFragment"
+-        android:name="com.example.ticketestg.Tickets"
++        android:name="com.example.ticketestg.User.Tickets"
+         android:label="fragment_tickets"
+         tools:layout="@layout/fragment_tickets" >
+         <action

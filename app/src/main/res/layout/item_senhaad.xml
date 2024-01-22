@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/editnomeuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome:" />
+
+    <TextView
+        android:id="@+id/editnumero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numero:" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E-mail:" />
+
+    <TextView
+        android:id="@+id/editmotivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Motivo:" />
+
+    <TextView
+        android:id="@+id/editdescricao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descrição:" />
+
+    <Button
+        android:id="@+id/butacept"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Aceitar" />
+
+    <Button
+        android:id="@+id/butreject"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Recusar" />
+
+
+</LinearLayout>
